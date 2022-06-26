@@ -1,26 +1,7 @@
 import type { NextPage } from 'next';
 import { GameBoard } from '../components/GameBoard';
 import { GameTile } from '../components/GameTile';
-import { shuffle } from '../utils/shuffle';
-import { useEffect, useState } from 'react';
-import { createBoard } from '../utils/createBoard';
-import { TileData } from '../domain/TileData';
-
-interface IUseGame {
-  tiles: TileData[];
-}
-
-const useGame = (): IUseGame => {
-  const [tiles, setTiles] = useState<TileData[]>([]);
-
-  useEffect(() => {
-    setTiles(createBoard());
-  }, []);
-
-  return {
-    tiles,
-  };
-};
+import { useGame } from '../hooks/useGame';
 
 const Home: NextPage = () => {
   const { tiles } = useGame();
