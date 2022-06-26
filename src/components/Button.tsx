@@ -1,12 +1,15 @@
-import { FC, PropsWithChildren } from 'react';
+import { ComponentProps, FC } from 'react';
 
-export const Button: FC<PropsWithChildren> = ({ children }) => {
+type Props = ComponentProps<'button'>;
+
+export const Button: FC<Props> = ({ children, ...otherProps }) => {
   return (
     <button
       style={{
         minWidth: 44,
         minHeight: 44,
       }}
+      {...otherProps}
     >
       {children}
     </button>

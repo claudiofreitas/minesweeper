@@ -8,14 +8,20 @@ import { GameHeader } from '../components/GameHeader';
 import { GameField } from '../components/GameField';
 
 const Home: NextPage = () => {
-  const { tiles } = useGame();
+  const { tiles, resetGame, remainingBombs, timeInSeconds } = useGame();
 
   return (
     <GameBoard>
       <GameHeader>
-        <NumericDisplay data={7} />
-        <Button>🥹</Button>
-        <NumericDisplay data={360} />
+        <div className="flex flex-row">
+          <NumericDisplay data={remainingBombs} />
+          💣
+        </div>
+        <Button onClick={() => resetGame()}>🥹</Button>
+        <div className="flex flex-row">
+          🕰
+          <NumericDisplay data={timeInSeconds} />
+        </div>
       </GameHeader>
       <GameField>
         {tiles.map((tile) => (
