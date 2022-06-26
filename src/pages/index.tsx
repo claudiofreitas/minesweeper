@@ -2,59 +2,23 @@ import type { NextPage } from 'next';
 import { GameBoard } from '../components/GameBoard';
 import { GameTile } from '../components/GameTile';
 import { shuffle } from '../utils/shuffle';
-
-interface TileData {
-  hasBomb: boolean;
-  isFlagged: boolean;
-  bombsAround: number;
-  x: number;
-  y: number;
-  id: string;
-}
+import { useEffect, useState } from 'react';
+import { createBoard } from '../utils/createBoard';
+import { TileData } from '../domain/TileData';
 
 interface IUseGame {
   tiles: TileData[];
 }
 
-interface BoardOption {
-  width?: number;
-  height?: number;
-  bombs?: number;
-}
-
 const useGame = (): IUseGame => {
-  const createNewBoard = ({
-    width = 9,
-    height = 9,
-    bombs = 10,
-  }: BoardOption = {}): TileData[] => {
-    let bombDistribution: boolean[] = [];
+  const [tiles, setTiles] = useState<TileData[]>([]);
 
-    for (let i = 0; i < width * height; i++) {
-      const hasBomb = i < bombs;
-      bombDistribution.push(hasBomb);
-    }
-    bombDistribution = shuffle(bombDistribution);
-
-    const _board = [];
-    for (let y = 0; y <= height; y += 1) {
-      for (let x = 0; x <= width; x += 1) {
-        const tile: TileData = {
-          id: `${x}|${y}`,
-          x,
-          y,
-          hasBomb: bombDistribution[x + y * width],
-          bombsAround: 0,
-          isFlagged: false,
-        };
-        _board.push(tile);
-      }
-    }
-    return _board;
-  };
+  useEffect(() => {
+    setTiles(createBoard());
+  }, []);
 
   return {
-    tiles: createNewBoard(),
+    tiles,
   };
 };
 
@@ -66,10 +30,6 @@ const Home: NextPage = () => {
       {tiles.map((tile, index) => (
         <GameTile key={index}>{tile.hasBomb ? '💣' : ''}</GameTile>
       ))}
-
-      {/*<Tile>💣</Tile>*/}
-      {/*<Tile>c</Tile>*/}
-      {/*<Tile>c</Tile>*/}
     </GameBoard>
   );
 };
