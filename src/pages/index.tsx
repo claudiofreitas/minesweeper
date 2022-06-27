@@ -6,9 +6,18 @@ import { NumericDisplay } from '../components/NumericDisplay';
 import { Button } from '../components/Button';
 import { GameHeader } from '../components/GameHeader';
 import { GameField } from '../components/GameField';
+import { useEffect } from 'react';
+
+const useEffectOnce = (callback: () => void) => {
+  useEffect(callback, []);
+};
 
 const Home: NextPage = () => {
-  const { tiles, resetGame, remainingBombs, timeInSeconds } = useGame();
+  const { tiles, resetGame, remainingBombs, elapsedSeconds } = useGame();
+
+  useEffectOnce(() => {
+    resetGame();
+  });
 
   return (
     <GameBoard>
@@ -20,7 +29,7 @@ const Home: NextPage = () => {
         <Button onClick={() => resetGame()}>🥹</Button>
         <div className="flex flex-row">
           🕰
-          <NumericDisplay data={timeInSeconds} />
+          <NumericDisplay data={elapsedSeconds} />
         </div>
       </GameHeader>
       <GameField>
