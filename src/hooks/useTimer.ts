@@ -1,40 +1,67 @@
 import { useEffect, useState } from 'react';
 
 interface IUseTimer {
-  timerInSeconds: number;
-  reset: () => void;
+  units: number;
   start: () => void;
+  stop: () => void;
+  reset: () => void;
+  isRunning: boolean;
 }
 
-export const useTimer = (): IUseTimer => {
-  const [isRunning, setRunning] = useState<boolean>(false);
-  const [timerInSeconds, setTimerInSeconds] = useState<number>(0);
+interface TimerOptions {
+  frequency: number;
+  isRunning: boolean;
+  initialUnits: number;
+}
 
-  useEffect(() => {
-    if (isRunning) {
-      const timeoutId = setTimeout(() => {
-        if (isRunning) {
-          setTimerInSeconds((n) => n + 1);
-        }
-      }, 1000);
+const defaultOptions: TimerOptions = {
+  frequency: 1,
+  isRunning: false,
+  initialUnits: 0,
+};
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [isRunning]);
-
-  const reset = () => {
-    setTimerInSeconds(0);
+export const useTimer = (options?: Partial<TimerOptions>): IUseTimer => {
+  const {
+    frequency,
+    isRunning: initialIsRunning,
+    initialUnits,
+  } = {
+    ...defaultOptions,
+    ...options,
   };
 
+  const [units, setUnits] = useState(initialUnits);
+  const [isRunning, setIsRunning] = useState<boolean>(initialIsRunning);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+    if (isRunning) {
+      timeoutId = setTimeout(() => {
+        setUnits((s) => s + 1);
+      }, 1000 / frequency);
+    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [units, frequency, isRunning, setUnits]);
+
   const start = () => {
-    setRunning(true);
+    setIsRunning(true);
+  };
+
+  const stop = () => {
+    setIsRunning(false);
+  };
+
+  const reset = () => {
+    setUnits(0);
   };
 
   return {
-    timerInSeconds,
-    reset,
+    units,
     start,
+    stop,
+    reset,
+    isRunning,
   };
 };
