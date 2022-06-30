@@ -7,13 +7,25 @@ import { Button } from '../components/Button';
 import { GameHeader } from '../components/GameHeader';
 import { GameField } from '../components/GameField';
 import { useEffect } from 'react';
+import { TileData } from '../domain/TileData';
 
 const useEffectOnce = (callback: () => void) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(callback, []);
 };
 
+const tileDisplayFromData = (tile: TileData): string => {
+  if (tile.type === 'bomb') {
+    return '💣';
+  } else {
+    return String(tile.bombsAround);
+  }
+};
+
 const Home: NextPage = () => {
-  const { tiles, resetGame, remainingBombs, elapsedSeconds } = useGame();
+  const { tiles, resetGame, remainingBombs, elapsedSeconds } = useGame({
+    initialBombs: 9,
+  });
 
   useEffectOnce(() => {
     resetGame();
@@ -33,9 +45,9 @@ const Home: NextPage = () => {
         </div>
       </GameHeader>
       <GameField>
-        {tiles.map((tile) => (
-          <Button key={tile.id}>
-            <GameTile>{tile.hasBomb ? '💣' : ''}</GameTile>
+        {tiles.map((tile, index) => (
+          <Button key={index}>
+            <GameTile>{tileDisplayFromData(tile)}</GameTile>
           </Button>
         ))}
       </GameField>
@@ -44,7 +56,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// possible values for each tile:
-// bomb: boolean,
-// visible: bomb, number, 0 (empty), flag

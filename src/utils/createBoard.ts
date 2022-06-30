@@ -2,34 +2,33 @@ import { shuffle } from './shuffle';
 import { TileData } from '../domain/TileData';
 
 interface BoardOption {
-  width?: number;
-  height?: number;
-  bombs?: number;
+  widthInTiles: number;
+  heightInTiles: number;
+  bombCount: number;
 }
 
 export const createBoard = ({
-  width = 9,
-  height = 9,
-  bombs = 10,
-}: BoardOption = {}): TileData[] => {
+  widthInTiles,
+  heightInTiles,
+  bombCount,
+}: BoardOption): TileData[] => {
   let bombDistribution: boolean[] = [];
 
-  for (let i = 0; i < width * height; i++) {
-    const hasBomb = i < bombs;
+  for (let i = 0; i < widthInTiles * heightInTiles; i++) {
+    const hasBomb = i < bombCount;
     bombDistribution.push(hasBomb);
   }
   bombDistribution = shuffle(bombDistribution);
 
   const _board = [];
-  for (let y = 0; y <= height; y += 1) {
-    for (let x = 0; x <= width; x += 1) {
+  for (let y = 0; y <= heightInTiles; y += 1) {
+    for (let x = 0; x <= widthInTiles; x += 1) {
       const tile: TileData = {
-        id: `${x}|${y}`,
         x,
         y,
-        hasBomb: bombDistribution[x + y * width],
+        type: bombDistribution[x + y * widthInTiles] ? 'bomb' : 'land',
+        state: 'covered',
         bombsAround: 0,
-        isFlagged: false,
       };
       _board.push(tile);
     }
