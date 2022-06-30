@@ -1,6 +1,32 @@
 import { shuffle } from './shuffle';
 import { TileData } from '../domain/TileData';
 
+export const convertToIndex = (
+  x: number,
+  y: number,
+  boardWidth: number
+): number => {
+  return x + boardWidth * y;
+};
+
+export const convertToXY = (
+  index: number,
+  boardWidth: number
+): { x: number; y: number } => {
+  const y = Math.floor(index / boardWidth);
+  const x = index % boardWidth;
+  return { x, y };
+};
+
+const getTile = (
+  x: number,
+  y: number,
+  board: TileData[],
+  boardWidth: number
+): TileData | undefined => {
+  return board[convertToIndex(x, y, boardWidth)];
+};
+
 interface BoardOption {
   widthInTiles: number;
   heightInTiles: number;
@@ -12,17 +38,21 @@ export const createBoard = ({
   heightInTiles,
   bombCount,
 }: BoardOption): TileData[] => {
-  let bombDistribution: boolean[] = [];
+  console.log('widthInTiles', widthInTiles);
+  console.log('heightInTiles', heightInTiles);
 
+  // Generate bomb distribution
+  let bombDistribution: boolean[] = [];
   for (let i = 0; i < widthInTiles * heightInTiles; i++) {
     const hasBomb = i < bombCount;
     bombDistribution.push(hasBomb);
   }
   bombDistribution = shuffle(bombDistribution);
 
-  const _board = [];
-  for (let y = 0; y <= heightInTiles; y += 1) {
-    for (let x = 0; x <= widthInTiles; x += 1) {
+  // Generate initial board
+  const board: TileData[] = [];
+  for (let y = 0; y < heightInTiles; y += 1) {
+    for (let x = 0; x < widthInTiles; x += 1) {
       const tile: TileData = {
         x,
         y,
@@ -30,8 +60,40 @@ export const createBoard = ({
         state: 'covered',
         bombsAround: 0,
       };
-      _board.push(tile);
+      board.push(tile);
     }
   }
-  return _board;
+
+  // Calculate quantity of bombs around
+  for (let i = 0; i < board.length; i += 1) {
+    const { x, y } = convertToXY(i, widthInTiles);
+    const tileNW = getTile(x - 1, y - 1, board, widthInTiles);
+    const tileNN = getTile(x + 0, y - 1, board, widthInTiles);
+    const tileNE = getTile(x + 1, y - 1, board, widthInTiles);
+    const tileEE = getTile(x + 1, y + 0, board, widthInTiles);
+    const tileSE = getTile(x + 1, y + 1, board, widthInTiles);
+    const tileSS = getTile(x + 0, y + 1, board, widthInTiles);
+    const tileSW = getTile(x - 1, y + 1, board, widthInTiles);
+    const tileWW = getTile(x - 1, y + 0, board, widthInTiles);
+    const definedNeighbors = [
+      tileNW,
+      tileNN,
+      tileNE,
+      tileEE,
+      tileSE,
+      tileSS,
+      tileSW,
+      tileWW,
+    ].filter((t) => t !== undefined);
+
+    let sum = 0;
+    for (let neighbor of definedNeighbors) {
+      if (neighbor!.type === 'bomb') {
+        sum += 1;
+      }
+    }
+    board[i].bombsAround = sum;
+  }
+
+  return board;
 };
