@@ -18,7 +18,7 @@ const tileDisplayFromData = (tile: TileData): string => {
   if (tile.type === 'bomb') {
     return '💣';
   } else {
-    return String(tile.bombsAround);
+    return tile.bombsAround ? String(tile.bombsAround) : '';
   }
 };
 
