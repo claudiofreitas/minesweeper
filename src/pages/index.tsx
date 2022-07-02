@@ -24,7 +24,9 @@ const Home: NextPage = () => {
   });
 
   const handleClick = (index: number): void => {
+    console.time('a');
     openTile(index);
+    console.timeEnd('a');
   };
 
   return (
@@ -33,12 +35,12 @@ const Home: NextPage = () => {
     >
       <GameBoard>
         <GameHeader>
-          <div className="flex flex-row">
+          <div className="flex flex-row gap-1">
             <NumericDisplay data={remainingBombs} />
             💣
           </div>
           <Button onClick={() => resetGame()}>🥹</Button>
-          <div className="flex flex-row">
+          <div className="flex flex-row gap-1">
             🕰
             <NumericDisplay data={elapsedSeconds} />
           </div>
