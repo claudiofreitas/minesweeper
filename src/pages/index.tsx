@@ -7,51 +7,51 @@ import { Button } from '../components/Button';
 import { GameHeader } from '../components/GameHeader';
 import { GameField } from '../components/GameField';
 import { useEffect } from 'react';
-import { TileData } from '../domain/TileData';
 
 const useEffectOnce = (callback: () => void) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(callback, []);
 };
 
-const tileDisplayFromData = (tile: TileData): string => {
-  if (tile.type === 'bomb') {
-    return '💣';
-  } else {
-    return tile.bombsAround ? String(tile.bombsAround) : '';
-  }
-};
-
 const Home: NextPage = () => {
-  const { tiles, resetGame, remainingBombs, elapsedSeconds } = useGame({
-    initialBombs: 9,
-  });
+  const { tiles, resetGame, remainingBombs, elapsedSeconds, openTile } =
+    useGame({
+      initialBombs: 9,
+    });
 
   useEffectOnce(() => {
     resetGame();
   });
 
+  const handleClick = (index: number): void => {
+    openTile(index);
+  };
+
   return (
-    <GameBoard>
-      <GameHeader>
-        <div className="flex flex-row">
-          <NumericDisplay data={remainingBombs} />
-          💣
-        </div>
-        <Button onClick={() => resetGame()}>🥹</Button>
-        <div className="flex flex-row">
-          🕰
-          <NumericDisplay data={elapsedSeconds} />
-        </div>
-      </GameHeader>
-      <GameField>
-        {tiles.map((tile, index) => (
-          <Button key={index}>
-            <GameTile>{tileDisplayFromData(tile)}</GameTile>
-          </Button>
-        ))}
-      </GameField>
-    </GameBoard>
+    <div
+      style={{ backgroundColor: '#151617', width: '100vw', height: '100vh' }}
+    >
+      <GameBoard>
+        <GameHeader>
+          <div className="flex flex-row">
+            <NumericDisplay data={remainingBombs} />
+            💣
+          </div>
+          <Button onClick={() => resetGame()}>🥹</Button>
+          <div className="flex flex-row">
+            🕰
+            <NumericDisplay data={elapsedSeconds} />
+          </div>
+        </GameHeader>
+        <GameField>
+          {tiles.map((tile, index) => (
+            <Button key={index} onClick={() => handleClick(index)}>
+              <GameTile data={tile} />
+            </Button>
+          ))}
+        </GameField>
+      </GameBoard>
+    </div>
   );
 };
 

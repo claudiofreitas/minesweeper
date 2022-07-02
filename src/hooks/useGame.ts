@@ -8,6 +8,7 @@ interface IUseGame {
   resetGame: () => void;
   remainingBombs: number;
   elapsedSeconds: number;
+  openTile: (index: number) => void;
 }
 
 interface GameOptions {
@@ -48,10 +49,58 @@ export const useGame = (options?: Partial<GameOptions>): IUseGame => {
     resetTimer();
   }, [resetBoard, resetTimer]);
 
+  const openTile = (tileIndex: number): void => {
+    console.log(`openTile(${tileIndex})`);
+
+    const tile = tiles[tileIndex];
+    if (!tile) return;
+
+    if (tile.type === 'bomb') {
+      if (tile.state === 'covered') {
+        // explode
+        tile.state = 'exploded';
+      }
+      if (tile.state === 'flagged') {
+        // do nothing
+        return;
+      }
+      if (tile.state === 'questioned') {
+        // explode
+        tile.state = 'exploded';
+      }
+      if (tile.state === 'discovered') {
+        // do nothing
+        return;
+      }
+      if (tile.state === 'exploded') {
+        // do nothing
+        return;
+      }
+    } else {
+      if (tile.state === 'covered') {
+        // discover
+        tile.state = 'discovered';
+      }
+      if (tile.state === 'flagged') {
+        // do nothing
+        return;
+      }
+      if (tile.state === 'questioned') {
+        // discover
+        tile.state = 'discovered';
+      }
+      if (tile.state === 'discovered') {
+        // do nothing
+        return;
+      }
+    }
+  };
+
   return {
     tiles,
     resetGame,
     remainingBombs: initialBombs,
     elapsedSeconds,
+    openTile,
   };
 };

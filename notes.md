@@ -14,14 +14,14 @@
 
 - bomb
   - covered
-  - flag
-  - question
-  - disclosed/exposed
+  - flagged
+  - questioned
+  - discovered
   - exploded
 - land
   - covered
-  - flag
-  - question
+  - flagged
+  - questioned
   - discovered: reveals how many mines are around, empty if 0
 
 ## Memos
@@ -30,3 +30,9 @@
 - Pressing the button can just send a signal to the game.
 - The game will decide what to do with that signal.
 - The visual of the tile can also be decided by the game as well.
+- Bg: #151617
+- Frame: #111213
+- Tile: #191A1C
+- Outline: #994D20
+- Header: #1A1A1C
+- Text: #C5C3C1
