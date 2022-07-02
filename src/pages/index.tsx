@@ -30,9 +30,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div
-      style={{ backgroundColor: '#151617', width: '100vw', height: '100vh' }}
-    >
+    <div>
       <GameBoard>
         <GameHeader>
           <div className="flex flex-row gap-1">

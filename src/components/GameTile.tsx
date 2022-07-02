@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC } from 'react';
 import { TileData } from '../domain/TileData';
 
 const tileDisplayFromData = (tile: TileData): string => {
@@ -16,12 +16,15 @@ type Props = {
 const TileOverlay: FC = () => {
   return (
     <div
-      className={`absolute top-0 left-0`}
       style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
         width: '100%',
         height: '100%',
+        backgroundColor: 'rgba(34,35,38,0.9)',
         // backgroundColor: 'rgb(25, 26, 28, 0.9)',
-        backdropFilter: 'blur(10px)',
+        // backdropFilter: 'blur(1px)',
       }}
     />
   );
@@ -34,8 +37,9 @@ export const GameTile: FC<Props> = ({ data }) => {
     <div
       className="flex relative items-center justify-center m-auto my-auto mx-auto outline-dashed outline-1 outline-red-900 bg-stone-800"
       style={{
-        width: 44,
-        height: 44,
+        width: '100%',
+        height: '100%',
+        aspectRatio: '1/1',
         color: '#C5C3C1',
         backgroundColor: '#191A1C',
       }}
