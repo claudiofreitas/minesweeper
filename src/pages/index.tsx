@@ -24,9 +24,7 @@ const Home: NextPage = () => {
   });
 
   const handleClick = (index: number): void => {
-    console.time('a');
     openTile(index);
-    console.timeEnd('a');
   };
 
   return (
