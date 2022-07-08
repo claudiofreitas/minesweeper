@@ -25,6 +25,7 @@ describe('convertToXY', () => {
     { index: 3, width: 2, expected: { x: 1, y: 1 } },
     { index: 7, width: 3, expected: { x: 1, y: 2 } },
     { index: 3, width: 3, expected: { x: 0, y: 1 } },
+    { index: 27, width: 9, expected: { x: 0, y: 3 } },
   ])(
     'convertToXY($index, $width) = $expected',
     ({ index, width, expected }) => {
