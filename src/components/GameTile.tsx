@@ -5,7 +5,15 @@ const tileDisplayFromData = (tile: TileData): string => {
   if (tile.type === 'bomb') {
     return '💣';
   } else {
-    return tile.bombsAround ? String(tile.bombsAround) : '';
+    if (tile.state === 'covered') {
+      return tile.bombsAround ? String(tile.bombsAround) : '';
+    } else if (tile.state === 'flagged') {
+      return '🏴‍☠️';
+    } else if (tile.state === 'questioned') {
+      return '❓';
+    } else {
+      return tile.bombsAround ? String(tile.bombsAround) : '';
+    }
   }
 };
 
@@ -31,7 +39,11 @@ const TileOverlay: FC = () => {
 };
 
 export const GameTile: FC<Props> = ({ data }) => {
-  const isCovered = data.state === 'covered';
+  const showOverlay =
+    data.state !== 'discovered' &&
+    data.state !== 'exploded' &&
+    data.state !== 'questioned' &&
+    data.state !== 'flagged';
 
   return (
     <div
@@ -44,7 +56,7 @@ export const GameTile: FC<Props> = ({ data }) => {
         backgroundColor: '#191A1C',
       }}
     >
-      {isCovered ? <TileOverlay /> : null}
+      {showOverlay ? <TileOverlay /> : null}
       {tileDisplayFromData(data)}
     </div>
   );

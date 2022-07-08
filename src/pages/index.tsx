@@ -14,10 +14,16 @@ const useEffectOnce = (callback: () => void) => {
 };
 
 const Home: NextPage = () => {
-  const { tiles, resetGame, remainingBombs, elapsedSeconds, openTile } =
-    useGame({
-      initialBombs: 9,
-    });
+  const {
+    tiles,
+    resetGame,
+    remainingBombs,
+    elapsedSeconds,
+    openTile,
+    toggleFlag,
+  } = useGame({
+    initialBombs: 9,
+  });
 
   useEffectOnce(() => {
     resetGame();
@@ -25,6 +31,10 @@ const Home: NextPage = () => {
 
   const handleClick = (index: number): void => {
     openTile(index);
+  };
+
+  const handleRightClick = (index: number): void => {
+    toggleFlag(index);
   };
 
   return (
@@ -43,7 +53,14 @@ const Home: NextPage = () => {
         </GameHeader>
         <GameField>
           {tiles.map((tile, index) => (
-            <Button key={index} onClick={() => handleClick(index)}>
+            <Button
+              key={index}
+              onClick={() => handleClick(index)}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleRightClick(index);
+              }}
+            >
               <GameTile data={tile} />
             </Button>
           ))}

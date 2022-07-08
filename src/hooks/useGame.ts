@@ -9,6 +9,7 @@ interface IUseGame {
   remainingBombs: number;
   elapsedSeconds: number;
   openTile: (index: number) => void;
+  toggleFlag: (index: number) => void;
 }
 
 interface GameOptions {
@@ -90,11 +91,39 @@ export const useGame = (options?: Partial<GameOptions>): IUseGame => {
     }
   };
 
+  const toggleFlag = (tileIndex: number): void => {
+    console.log(`toggleFlag(${tileIndex})`);
+
+    const newTiles = tiles.slice();
+
+    const tile = newTiles[tileIndex];
+    if (!tile) return;
+
+    if (tile.state === 'covered') {
+      // flag
+      tile.state = 'flagged';
+      setTiles(newTiles);
+    } else if (tile.state === 'flagged') {
+      // question
+      tile.state = 'questioned';
+      setTiles(newTiles);
+    } else if (tile.state === 'questioned') {
+      // unflag
+      tile.state = 'covered';
+      setTiles(newTiles);
+    } else if (tile.state === 'discovered') {
+      // do nothing
+    } else if (tile.state === 'exploded') {
+      // do nothing
+    }
+  };
+
   return {
     tiles,
     resetGame,
     remainingBombs: initialBombs,
     elapsedSeconds,
     openTile,
+    toggleFlag,
   };
 };
