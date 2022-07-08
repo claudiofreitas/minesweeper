@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     openTile,
     toggleFlag,
   } = useGame({
-    initialBombs: 9,
+    initialBombs: 10,
   });
 
   useEffectOnce(() => {
