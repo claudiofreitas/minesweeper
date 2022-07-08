@@ -7,7 +7,10 @@ const Timer: NextPage = () => {
     start,
     stop,
     reset,
-  } = useTimer({ initialUnits: 60, frequency: 60 });
+  } = useTimer({
+    initialUnits: 60,
+    frequency: 60,
+  });
 
   return (
     <div className="flex flex-col w-screen h-screen items-center justify-center">
