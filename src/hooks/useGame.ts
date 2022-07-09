@@ -56,7 +56,12 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
   };
 
   const [tiles, setTiles] = useState<TileData[]>([]);
-  const { reset: resetTimer, units: elapsedSeconds } = useTimer({
+  const {
+    reset: resetTimer,
+    units: elapsedSeconds,
+    stop: stopTimer,
+    start: startTimer,
+  } = useTimer({
     isRunning: true,
   });
 
@@ -75,9 +80,11 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     setStatus(GameStatus.IN_PROGRESS);
     resetBoard();
     resetTimer();
+    startTimer();
   }, [resetBoard, resetTimer]);
 
   const openTile = (tileIndex: number): void => {
+    if (status !== GameStatus.IN_PROGRESS) return;
     const newTiles = tiles.slice();
 
     const tile = newTiles[tileIndex];
@@ -86,6 +93,8 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     if (['covered', 'questioned'].includes(tile.state)) {
       if (tile.type === 'bomb') {
         tile.state = 'exploded';
+        setStatus(GameStatus.LOST);
+        stopTimer();
       } else {
         tile.state = 'discovered';
         if (tile.bombsAround === 0) {
@@ -118,6 +127,7 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
   };
 
   const toggleFlag = (tileIndex: number): void => {
+    if (status !== GameStatus.IN_PROGRESS) return;
     const newTiles = tiles.slice();
 
     const tile = newTiles[tileIndex];
@@ -154,6 +164,7 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
   if (undiscoveredLandCount === 0) {
     if (status != GameStatus.WON) {
       setStatus(GameStatus.WON);
+      stopTimer();
     }
   }
 
