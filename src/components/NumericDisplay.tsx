@@ -4,7 +4,7 @@ interface Props {
   data: number;
 }
 
-export const NumericDisplay: FC<Props> = ({ data }) => {
+const NumericDisplay: FC<Props> = ({ data }) => {
   const stringData = String(data)
     .padStart(3, '0')
     .split('')
@@ -13,3 +13,5 @@ export const NumericDisplay: FC<Props> = ({ data }) => {
 
   return <div>{stringData}</div>;
 };
+
+export { NumericDisplay };

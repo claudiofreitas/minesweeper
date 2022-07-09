@@ -1,4 +1,4 @@
-export const convertToXY = (
+const convertToXY = (
   index: number,
   boardWidth: number
 ): { x: number; y: number } => {
@@ -6,3 +6,5 @@ export const convertToXY = (
   const x = index % boardWidth;
   return { x, y };
 };
+
+export { convertToXY };

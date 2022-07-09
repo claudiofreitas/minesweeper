@@ -20,7 +20,7 @@ const defaultOptions: TimerOptions = {
   initialUnits: 0,
 };
 
-export const useTimer = (options?: Partial<TimerOptions>): IUseTimer => {
+const useTimer = (options?: Partial<TimerOptions>): IUseTimer => {
   const {
     frequency,
     isRunning: initialIsRunning,
@@ -65,3 +65,5 @@ export const useTimer = (options?: Partial<TimerOptions>): IUseTimer => {
     isRunning,
   };
 };
+
+export { useTimer };

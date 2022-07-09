@@ -44,7 +44,7 @@ const TileOverlay: FC = () => {
   );
 };
 
-export const GameTile: FC<Props> = ({ data }) => {
+const GameTile: FC<Props> = ({ data }) => {
   const showOverlay =
     data.state !== 'discovered' &&
     data.state !== 'exploded' &&
@@ -67,3 +67,5 @@ export const GameTile: FC<Props> = ({ data }) => {
     </div>
   );
 };
+
+export { GameTile };

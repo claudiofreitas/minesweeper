@@ -58,7 +58,7 @@ interface BoardOption {
   bombCount: number;
 }
 
-export const createBoard = ({
+const createBoard = ({
   widthInTiles,
   heightInTiles,
   bombCount,
@@ -93,3 +93,5 @@ export const createBoard = ({
 
   return board;
 };
+
+export { createBoard };

@@ -2,7 +2,7 @@ function randomUpTo(n: number) {
   return Math.floor(Math.random() * n);
 }
 
-export function shuffle<T>(array: T[]): T[] {
+function shuffle<T>(array: T[]): T[] {
   const arrayCopy = array.slice();
   for (
     let movingIndex = arrayCopy.length - 1;
@@ -17,6 +17,8 @@ export function shuffle<T>(array: T[]): T[] {
   }
   return arrayCopy;
 }
+
+export { shuffle };
 
 // Example:
 // shuffle([1, 2, 3, 4])

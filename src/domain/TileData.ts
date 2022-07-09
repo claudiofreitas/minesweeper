@@ -26,7 +26,7 @@ type TileDataLand = {
   type: 'land';
   state: LandTileState;
 };
-export type TileData = TileDataCommon & (TileDataBomb | TileDataLand);
+type TileData = TileDataCommon & (TileDataBomb | TileDataLand);
 
 // TODO: improve type above
 // Would be best if the code below didn't offer the option 'exploded' for type 'land'
@@ -37,3 +37,5 @@ export type TileData = TileDataCommon & (TileDataBomb | TileDataLand);
 //   type: 'land',
 //   state: 'exploded',
 // };
+
+export type { TileData };

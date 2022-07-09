@@ -26,7 +26,7 @@ const defaultOptions: GameOptions = {
   boardHeightInTiles: 9,
 };
 
-export const useGame = (options?: Partial<GameOptions>): IUseGame => {
+const useGame = (options?: Partial<GameOptions>): IUseGame => {
   const { initialBombs, boardWidthInTiles, boardHeightInTiles } = {
     ...defaultOptions,
     ...options,
@@ -125,3 +125,5 @@ export const useGame = (options?: Partial<GameOptions>): IUseGame => {
     toggleFlag,
   };
 };
+
+export { useGame };

@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 
-export const GameHeader: FC<PropsWithChildren> = ({ children }) => {
+const GameHeader: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div
       className="flex flex-row items-center justify-between px-3"
@@ -12,3 +12,5 @@ export const GameHeader: FC<PropsWithChildren> = ({ children }) => {
     </div>
   );
 };
+
+export { GameHeader };

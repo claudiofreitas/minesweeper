@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 
-export const GameField: FC<PropsWithChildren> = ({ children }) => {
+const GameField: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div
       style={{
@@ -12,3 +12,5 @@ export const GameField: FC<PropsWithChildren> = ({ children }) => {
     </div>
   );
 };
+
+export { GameField };
