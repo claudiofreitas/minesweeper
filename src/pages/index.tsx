@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { GameBoard } from '../components/GameBoard';
 import { GameTile } from '../components/GameTile';
-import { PresetGameOptions, useGame } from '../hooks/useGame';
+import { GameStatus, PresetGameOptions, useGame } from '../hooks/useGame';
 import { NumericDisplay } from '../components/NumericDisplay';
 import { Button } from '../components/Button';
 import { GameHeader } from '../components/GameHeader';
@@ -22,6 +22,7 @@ const Home: NextPage = () => {
     openTile,
     toggleFlag,
     width,
+    status,
   } = useGame(PresetGameOptions.EASY);
 
   useEffectOnce(() => {
@@ -36,6 +37,14 @@ const Home: NextPage = () => {
     toggleFlag(index);
   };
 
+  const resetButtonLabel = (status: GameStatus): string => {
+    return {
+      [GameStatus.IN_PROGRESS]: '🥹',
+      [GameStatus.WON]: '🥳',
+      [GameStatus.LOST]: '🤯',
+    }[status];
+  };
+
   return (
     <div>
       <GameBoard>
@@ -44,7 +53,9 @@ const Home: NextPage = () => {
             <NumericDisplay data={remainingBombs} />
             💣
           </div>
-          <Button onClick={() => resetGame()}>🥹</Button>
+          <Button onClick={() => resetGame()}>
+            {resetButtonLabel(status)}
+          </Button>
           <div className="flex flex-row gap-1">
             🕰
             <NumericDisplay data={elapsedSeconds} />

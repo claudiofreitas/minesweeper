@@ -24,6 +24,12 @@
   - questioned
   - discovered: reveals how many mines are around, empty if 0
 
+## Game status:
+
+- in progress
+- won
+- lost
+
 ## Memos
 
 - Interaction with the board does not need to necessarily be with a button that knows exactly the state.

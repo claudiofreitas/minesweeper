@@ -13,6 +13,7 @@ interface IUseGame {
   openTile: (index: number) => void;
   toggleFlag: (index: number) => void;
   width: number;
+  status: GameStatus;
 }
 
 interface GameOptions {
@@ -40,6 +41,12 @@ const PresetGameOptions: Record<PresetKeys, GameOptions> = {
   },
 };
 
+enum GameStatus {
+  IN_PROGRESS,
+  LOST,
+  WON,
+}
+
 const useGame = (options?: Partial<GameOptions>): IUseGame => {
   const defaultOptions = PresetGameOptions.EASY;
 
@@ -53,6 +60,8 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     isRunning: true,
   });
 
+  const [status, setStatus] = useState<GameStatus>(GameStatus.IN_PROGRESS);
+
   const resetBoard = useCallback(() => {
     let newBoard = createBoard({
       bombCount: initialBombs,
@@ -63,6 +72,7 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
   }, [boardHeightInTiles, boardWidthInTiles, initialBombs]);
 
   const resetGame = useCallback(() => {
+    setStatus(GameStatus.IN_PROGRESS);
     resetBoard();
     resetTimer();
   }, [resetBoard, resetTimer]);
@@ -134,6 +144,19 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
 
   const flagCount = tiles.filter((tile) => tile.state === 'flagged').length;
 
+  const landTiles = tiles.filter((tile) => tile.type === 'land');
+  const discoveredLandCount = landTiles.filter(
+    (tile) => tile.state === 'discovered'
+  ).length;
+  const landCount = landTiles.length;
+  const undiscoveredLandCount = landCount - discoveredLandCount;
+
+  if (undiscoveredLandCount === 0) {
+    if (status != GameStatus.WON) {
+      setStatus(GameStatus.WON);
+    }
+  }
+
   return {
     tiles,
     resetGame,
@@ -142,7 +165,8 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     openTile,
     toggleFlag,
     width: boardWidthInTiles,
+    status,
   };
 };
 
-export { useGame, PresetGameOptions };
+export { useGame, PresetGameOptions, GameStatus };
