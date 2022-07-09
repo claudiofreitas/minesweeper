@@ -81,7 +81,7 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     resetBoard();
     resetTimer();
     startTimer();
-  }, [resetBoard, resetTimer]);
+  }, [resetBoard, resetTimer, startTimer]);
 
   const openTile = (tileIndex: number): void => {
     if (status !== GameStatus.IN_PROGRESS) return;
