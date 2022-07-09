@@ -12,6 +12,7 @@ interface IUseGame {
   elapsedSeconds: number;
   openTile: (index: number) => void;
   toggleFlag: (index: number) => void;
+  width: number;
 }
 
 interface GameOptions {
@@ -20,13 +21,28 @@ interface GameOptions {
   boardHeightInTiles: number;
 }
 
-const defaultOptions: GameOptions = {
-  initialBombs: 10,
-  boardWidthInTiles: 9,
-  boardHeightInTiles: 9,
+type PresetKeys = 'EASY' | 'MEDIUM' | 'HARD';
+const PresetGameOptions: Record<PresetKeys, GameOptions> = {
+  EASY: {
+    boardWidthInTiles: 9,
+    boardHeightInTiles: 9,
+    initialBombs: 10,
+  },
+  MEDIUM: {
+    boardWidthInTiles: 16,
+    boardHeightInTiles: 16,
+    initialBombs: 40,
+  },
+  HARD: {
+    boardWidthInTiles: 16,
+    boardHeightInTiles: 30,
+    initialBombs: 99,
+  },
 };
 
 const useGame = (options?: Partial<GameOptions>): IUseGame => {
+  const defaultOptions = PresetGameOptions.EASY;
+
   const { initialBombs, boardWidthInTiles, boardHeightInTiles } = {
     ...defaultOptions,
     ...options,
@@ -123,7 +139,8 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     elapsedSeconds,
     openTile,
     toggleFlag,
+    width: boardWidthInTiles,
   };
 };
 
-export { useGame };
+export { useGame, PresetGameOptions };

@@ -1,11 +1,15 @@
 import { FC, PropsWithChildren } from 'react';
 
-const GameField: FC<PropsWithChildren> = ({ children }) => {
+type Props = PropsWithChildren & {
+  width: number;
+};
+
+const GameField: FC<Props> = ({ children, width }) => {
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(9, 1fr)',
+        gridTemplateColumns: `repeat(${width}, 1fr)`,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { GameBoard } from '../components/GameBoard';
 import { GameTile } from '../components/GameTile';
-import { useGame } from '../hooks/useGame';
+import { PresetGameOptions, useGame } from '../hooks/useGame';
 import { NumericDisplay } from '../components/NumericDisplay';
 import { Button } from '../components/Button';
 import { GameHeader } from '../components/GameHeader';
@@ -21,9 +21,8 @@ const Home: NextPage = () => {
     elapsedSeconds,
     openTile,
     toggleFlag,
-  } = useGame({
-    initialBombs: 10,
-  });
+    width,
+  } = useGame(PresetGameOptions.EASY);
 
   useEffectOnce(() => {
     resetGame();
@@ -51,7 +50,7 @@ const Home: NextPage = () => {
             <NumericDisplay data={elapsedSeconds} />
           </div>
         </GameHeader>
-        <GameField>
+        <GameField width={width}>
           {tiles.map((tile, index) => (
             <Button
               key={index}
