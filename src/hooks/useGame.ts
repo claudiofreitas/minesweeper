@@ -1,5 +1,5 @@
 import { TileData } from '../domain/TileData';
-import { useCallback, useReducer, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { createBoard } from '../utils/createBoard';
 import { useTimer } from './useTimer';
 import { convertToXY } from '../math/convertToXY';
