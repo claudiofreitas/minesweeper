@@ -95,6 +95,13 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
         tile.state = 'exploded';
         setStatus(GameStatus.LOST);
         stopTimer();
+        tiles
+          .filter((tile) => tile.type === 'bomb')
+          .forEach((tile) => {
+            if (tile.state != 'exploded') {
+              tile.state = 'discovered';
+            }
+          });
       } else {
         tile.state = 'discovered';
         if (tile.bombsAround === 0) {
@@ -165,6 +172,11 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     if (status != GameStatus.WON) {
       setStatus(GameStatus.WON);
       stopTimer();
+      tiles
+        .filter((tile) => tile.type === 'bomb')
+        .forEach((tile) => {
+          tile.state = 'flagged';
+        });
     }
   }
 
