@@ -1,22 +1,7 @@
 import { shuffle } from './shuffle';
 import { TileData } from '../domain/TileData';
-
-export const convertToIndex = (
-  x: number,
-  y: number,
-  boardWidth: number
-): number => {
-  return x + boardWidth * y;
-};
-
-export const convertToXY = (
-  index: number,
-  boardWidth: number
-): { x: number; y: number } => {
-  const y = Math.floor(index / boardWidth);
-  const x = index % boardWidth;
-  return { x, y };
-};
+import { convertToIndex } from '../math/convertToIndex';
+import { convertToXY } from '../math/convertToXY';
 
 const getTile = (
   x: number,
