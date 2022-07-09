@@ -2,18 +2,24 @@ import { FC } from 'react';
 import { TileData } from '../domain/TileData';
 
 const tileDisplayFromData = (tile: TileData): string => {
-  if (tile.state === 'covered') {
+  if (tile.state === 'flagged') {
+    return '🏴‍☠️';
+  } else if (tile.state === 'questioned') {
+    return '❓';
+  } else if (tile.state === 'covered') {
     if (tile.type === 'bomb') {
       return '💣';
     } else {
       return tile.bombsAround ? String(tile.bombsAround) : '';
     }
-  } else if (tile.state === 'flagged') {
-    return '🏴‍☠️';
-  } else if (tile.state === 'questioned') {
-    return '❓';
+  } else if (tile.state === 'discovered') {
+    if (tile.type === 'bomb') {
+      return '💣';
+    } else {
+      return tile.bombsAround ? String(tile.bombsAround) : '';
+    }
   } else {
-    return tile.bombsAround ? String(tile.bombsAround) : '';
+    return '💥';
   }
 };
 
