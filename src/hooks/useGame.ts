@@ -1,7 +1,9 @@
 import { TileData } from '../domain/TileData';
-import { useCallback, useState } from 'react';
+import { useCallback, useReducer, useState } from 'react';
 import { createBoard } from '../utils/createBoard';
 import { useTimer } from './useTimer';
+import { convertToXY } from '../math/convertToXY';
+import { convertToIndex } from '../math/convertToIndex';
 
 interface IUseGame {
   tiles: TileData[];
@@ -55,17 +57,34 @@ export const useGame = (options?: Partial<GameOptions>): IUseGame => {
     const tile = newTiles[tileIndex];
     if (!tile) return;
 
-    if (tile.state === 'covered') {
+    if (['covered', 'questioned'].includes(tile.state)) {
       if (tile.type === 'bomb') {
         tile.state = 'exploded';
       } else {
         tile.state = 'discovered';
-      }
-    } else if (tile.state === 'questioned') {
-      if (tile.type === 'bomb') {
-        tile.state = 'exploded';
-      } else {
-        tile.state = 'discovered';
+        if (tile.bombsAround === 0) {
+          const { x, y } = convertToXY(tileIndex, boardWidthInTiles);
+          for (let deltaX = -1; deltaX <= 1; deltaX++) {
+            for (let deltaY = -1; deltaY <= 1; deltaY++) {
+              const neighborX = x + deltaX;
+              const neighborY = y + deltaY;
+              const isNeighborXInsideRange =
+                0 <= neighborX && neighborX < boardWidthInTiles;
+
+              const isNeighborYInsideRange =
+                0 <= neighborY && neighborY < boardWidthInTiles;
+
+              if (isNeighborXInsideRange && isNeighborYInsideRange) {
+                const neighborIndex = convertToIndex(
+                  neighborX,
+                  neighborY,
+                  boardWidthInTiles
+                );
+                openTile(neighborIndex);
+              }
+            }
+          }
+        }
       }
     }
 
