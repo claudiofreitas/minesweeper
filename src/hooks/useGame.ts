@@ -132,10 +132,15 @@ const useGame = (options?: Partial<GameOptions>): IUseGame => {
     }
   };
 
+  const flagCount = tiles.reduce((currentCount, tile) => {
+    if (tile.state === 'flagged') return currentCount + 1;
+    return currentCount;
+  }, 0);
+
   return {
     tiles,
     resetGame,
-    remainingBombs: initialBombs,
+    remainingBombs: initialBombs - flagCount,
     elapsedSeconds,
     openTile,
     toggleFlag,
