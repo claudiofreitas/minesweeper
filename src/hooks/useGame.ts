@@ -45,55 +45,34 @@ export const useGame = (options?: Partial<GameOptions>): IUseGame => {
   }, [boardHeightInTiles, boardWidthInTiles, initialBombs]);
 
   const resetGame = useCallback(() => {
-    console.log('resetGame()');
     resetBoard();
     resetTimer();
   }, [resetBoard, resetTimer]);
 
   const openTile = (tileIndex: number): void => {
-    console.log(`openTile(${tileIndex})`);
-
     const newTiles = tiles.slice();
 
     const tile = newTiles[tileIndex];
     if (!tile) return;
 
-    if (tile.type === 'bomb') {
-      if (tile.state === 'covered') {
-        // explode
+    if (tile.state === 'covered') {
+      if (tile.type === 'bomb') {
         tile.state = 'exploded';
-        setTiles(newTiles);
-      } else if (tile.state === 'flagged') {
-        // do nothing
-      } else if (tile.state === 'questioned') {
-        // explode
-        tile.state = 'exploded';
-        setTiles(newTiles);
-      } else if (tile.state === 'discovered') {
-        // do nothing
-      } else if (tile.state === 'exploded') {
-        // do nothing
+      } else {
+        tile.state = 'discovered';
       }
-    } else {
-      if (tile.state === 'covered') {
-        // discover
+    } else if (tile.state === 'questioned') {
+      if (tile.type === 'bomb') {
+        tile.state = 'exploded';
+      } else {
         tile.state = 'discovered';
-        setTiles(newTiles);
-      } else if (tile.state === 'flagged') {
-        // do nothing
-      } else if (tile.state === 'questioned') {
-        // discover
-        tile.state = 'discovered';
-        setTiles(newTiles);
-      } else if (tile.state === 'discovered') {
-        // do nothing
       }
     }
+
+    setTiles(newTiles);
   };
 
   const toggleFlag = (tileIndex: number): void => {
-    console.log(`toggleFlag(${tileIndex})`);
-
     const newTiles = tiles.slice();
 
     const tile = newTiles[tileIndex];

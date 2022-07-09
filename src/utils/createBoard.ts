@@ -78,9 +78,6 @@ export const createBoard = ({
   heightInTiles,
   bombCount,
 }: BoardOption): TileData[] => {
-  console.log('widthInTiles', widthInTiles);
-  console.log('heightInTiles', heightInTiles);
-
   // Generate bomb distribution
   let bombDistribution: boolean[] = [];
   for (let i = 0; i < widthInTiles * heightInTiles; i++) {
